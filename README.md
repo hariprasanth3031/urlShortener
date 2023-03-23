@@ -22,5 +22,9 @@ Given a short url, fetch its corresponding longurl.
 As we know, all the short url's are unique we can direct query in our db using the given tiny url and expire time >= current time.
 Expire time >= current time condition will handle the expiration case.
 
+# Scalabality on number of url's
+As the character set consists of 62 characters, we can generate trillions of url.
+In case we have fixed number of characters, n power k will be unique urls where n is length, k = 62
+
 
 
