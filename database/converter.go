@@ -3,37 +3,11 @@ package database
 import (
 	"SD/config"
 	"SD/constants"
+	"SD/helper"
 	"SD/models"
 	"fmt"
-	"math/rand"
+	"time"
 )
-
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-func GenerateRandomUrl(size int) string {
-	b := make([]byte, size)
-	for i := range b {
-		b[i] = letterBytes[rand.Intn(len(letterBytes))]
-	}
-	return string(b)
-}
-
-func CheckUrl(input string) bool {
-
-	config.Logger.Debug("Database - Check duplicates")
-
-	var db = config.Db
-
-	var out string
-	res := db.Debug().Select("short_url").Table("url_store").
-		Where("short_url = ?", input).
-		Find(&out)
-
-	if res.RowsAffected > 0 {
-		return true
-	}
-	return false
-}
 
 func Decode(input string) (string, error) {
 
@@ -43,9 +17,11 @@ func Decode(input string) (string, error) {
 
 	var output string
 
-	if res := db.Debug().Raw("select long_url from url_store where short_url = ?", input).
-		Find(&output).Error; res != nil {
-		return output, res
+	ctime := time.Now()
+
+	if err := db.Debug().Raw("select long_url from url_store where short_url = ? and expires_at >= ?", input, ctime).
+		Find(&output).Error; err != nil {
+		return output, err
 	}
 
 	return output, nil
@@ -64,6 +40,8 @@ func Encode(n uint64) (string, error) {
 		n /= 62
 	}
 
+	shorturl = helper.Reverse(shorturl)
+
 	db := config.Db
 
 	var input models.UrlStore
@@ -71,8 +49,10 @@ func Encode(n uint64) (string, error) {
 	input.ShortUrl = shorturl
 
 	if err := db.Debug().Where("id = ?", id).Updates(input).Error; err != nil {
-		return "", nil
+		return "", err
 	}
+
+	shorturl = "localhost:8003/tinyurl/short/" + shorturl
 
 	return shorturl, nil
 }
@@ -86,7 +66,10 @@ func InsertLongUrl(longurl string) uint64 {
 
 	var id uint64
 
-	if res := db.Debug().Raw("Insert into url_store (long_url) VALUES (?) RETURNING id", longurl).Scan(&id).Error; res != nil {
+	times := time.Now().AddDate(0, 0, 1)
+	ctime := time.Now()
+
+	if res := db.Debug().Raw("Insert into url_store (long_url, created_at, expires_at) VALUES (?, ?, ?) RETURNING id", longurl, ctime, times).Scan(&id).Error; res != nil {
 		return 0
 	}
 

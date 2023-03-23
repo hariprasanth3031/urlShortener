@@ -17,7 +17,7 @@ func Decode(input string) models.JSONOutput {
 	if err != nil {
 		return models.JSONOutput{
 			Code: http.StatusInternalServerError,
-			Data: output,
+			Data: "Error while fetching the longurl",
 		}
 	}
 
@@ -35,24 +35,15 @@ func Encode(input models.ConverterInput) models.JSONOutput {
 	var output string
 	var err error
 
-	//shortenedUrl := database.GenerateRandomUrl(5)
-
-	//IsPresent := database.CheckUrl(shortenedUrl)
-
-	// if !IsPresent {
-
-	//Insert the long url and get id
-
 	id := database.InsertLongUrl(input.Url)
 
 	output, err = database.Encode(id)
 	if err != nil {
 		return models.JSONOutput{
 			Code: http.StatusInternalServerError,
-			Data: output,
+			Data: err,
 		}
 	}
-	// }
 
 	return models.JSONOutput{
 		Code: http.StatusOK,
