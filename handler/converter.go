@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"urlshortener/config"
 	"urlshortener/models"
@@ -17,7 +18,9 @@ func Encode(c *gin.Context) {
 
 	err := c.BindJSON(&input)
 
-	if err != nil {
+	fmt.Println("input is", input.Url)
+
+	if err != nil || input.Url == "" {
 		config.Logger.Error("Error while binding the input")
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Invalid Input"})
 		return

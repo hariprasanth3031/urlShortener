@@ -2,10 +2,10 @@ package service
 
 import (
 	// "fmt"
+	"net/http"
 	"urlshortener/config"
 	"urlshortener/database"
 	"urlshortener/models"
-	"net/http"
 )
 
 func Decode(input string) models.JSONOutput {
@@ -35,7 +35,14 @@ func Encode(input models.ConverterInput) models.JSONOutput {
 	var output string
 	var err error
 
-	id := database.InsertLongUrl(input.Url)
+	id, err := database.InsertLongUrl(input.Url)
+
+	if err != nil {
+		return models.JSONOutput{
+			Code: http.StatusInternalServerError,
+			Data: err,
+		}
+	}
 
 	output, err = database.Encode(id)
 	if err != nil {

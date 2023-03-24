@@ -1,6 +1,7 @@
 package database
 
 import (
+	"errors"
 	"fmt"
 	"time"
 	"urlshortener/config"
@@ -57,7 +58,7 @@ func Encode(n uint64) (string, error) {
 	return shorturl, nil
 }
 
-func InsertLongUrl(longurl string) uint64 {
+func InsertLongUrl(longurl string) (uint64, error) {
 
 	db := config.Db
 
@@ -69,12 +70,12 @@ func InsertLongUrl(longurl string) uint64 {
 	times := time.Now().AddDate(0, 0, 1)
 	ctime := time.Now()
 
-	if res := db.Debug().Raw("Insert into url_store (long_url, created_at, expires_at) VALUES (?, ?, ?) RETURNING id", longurl, ctime, times).Scan(&id).Error; res != nil {
-		return 0
+	if res := db.Debug().Raw("Insert into url_tore (long_url, created_at, expires_at) VALUES (?, ?, ?) RETURNING id", longurl, ctime, times).Scan(&id).Error; res != nil {
+		return 0, errors.New("Unable to insert url")
 	}
 
 	fmt.Println(id)
 
-	return id
+	return id, nil
 
 }
