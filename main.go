@@ -27,6 +27,8 @@ func main() {
 	group.GET("/public/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"ping": "pong"})
 	})
+
+	//listens at 8003
 	if err := server.Run(":8003"); err != nil {
 		panic(err)
 	}
