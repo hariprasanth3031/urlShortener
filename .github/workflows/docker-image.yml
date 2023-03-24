@@ -19,7 +19,7 @@ jobs:
         DOCKER_USER: ${{secrets.DOCKER-USER}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: |
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        docker login -u $DOCKER-USER -p $DOCKER-PASSWORD
       
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag urlshortener:$(date +%s)
