@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"SD/config"
-	"SD/models"
-	"SD/service"
 	"net/http"
+	"urlshortener/config"
+	"urlshortener/models"
+	"urlshortener/service"
 
 	"github.com/gin-gonic/gin"
 )

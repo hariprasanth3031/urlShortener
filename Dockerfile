@@ -1,16 +1,14 @@
-FROM golang:1.18
+FROM golang:1.16-alpine
 
-RUN mkdir -p /urlshortener
+WORKDIR /app
 
-COPY . /urlshortener
-WORKDIR /urlshortener
-RUN mv  .netrc ~/.netrc
+COPY go.mod ./
+RUN go mod download
 
-RUN tail -1 .git/logs/HEAD > .git/version
+COPY *.go ./
 
-RUN mkdir /go/logs && GO111MODULE=on go build -o /go/bin -mod vendor
-
-ENTRYPOINT /go/bin/urlshortener
+RUN go build -o /SD
 
 EXPOSE 8003
 
+CMD [ "/SD" ]

@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	//"/Users/hari/Desktop/SD/routes"
-	"SD/config"
-	"SD/routes"
+	"urlshortener/config"
+	"urlshortener/routes"
 
 	"github.com/gin-gonic/gin"
 )

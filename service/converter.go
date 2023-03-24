@@ -2,9 +2,9 @@ package service
 
 import (
 	// "fmt"
-	"SD/config"
-	"SD/database"
-	"SD/models"
+	"urlshortener/config"
+	"urlshortener/database"
+	"urlshortener/models"
 	"net/http"
 )
 

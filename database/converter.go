@@ -1,12 +1,12 @@
 package database
 
 import (
-	"SD/config"
-	"SD/constants"
-	"SD/helper"
-	"SD/models"
 	"fmt"
 	"time"
+	"urlshortener/config"
+	"urlshortener/constants"
+	"urlshortener/helper"
+	"urlshortener/models"
 )
 
 func Decode(input string) (string, error) {
