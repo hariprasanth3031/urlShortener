@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"urlshortener/config"
 	"urlshortener/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -28,9 +29,9 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"ping": "pong"})
 	})
 
-	//listens at 8003
-	fmt.Println("Running at port: 8003")
-	if err := server.Run(":8003"); err != nil {
+	//listens at 8080
+	fmt.Println("Running at port: 8080")
+	if err := server.Run(":8080"); err != nil {
 		panic(err)
 	}
 }

@@ -17,6 +17,6 @@ RUN go build -o /go/bin -mod vendor
 
 ENTRYPOINT /go/bin/urlshortener
 
-EXPOSE 8003
+EXPOSE 8080
 
 CMD [ "/urlshortener" ]

@@ -15,7 +15,7 @@ func InitializeDb() {
 
 	db, err := gorm.Open(sql.Open(Env.DBCon+fmt.Sprintf("?%s", "&parseTime=True")), &gorm.Config{
 		SkipDefaultTransaction: false,
-		NamingStrategy:         schema.NamingStrategy{SingularTable: true, TablePrefix: "sample."},
+		NamingStrategy:         schema.NamingStrategy{SingularTable: true, TablePrefix: "url_shortener."},
 	})
 
 	if err != nil {

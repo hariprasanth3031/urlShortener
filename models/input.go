@@ -1,5 +1,6 @@
 package models
 
+// All the models related to input are defined
 type UrlStore struct {
 	ID        uint64 `gorm:"column:id;type:bigint;not null;primaryKey" json:"id"`
 	LongUrl   string `gorm:"column:long_url;type:varchar(200);not null" json:"long_url"`
