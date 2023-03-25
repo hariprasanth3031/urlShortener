@@ -1,23 +1,35 @@
 package service
 
 import (
-	// "fmt"
 	"net/http"
 	"urlshortener/config"
 	"urlshortener/database"
 	"urlshortener/models"
 )
 
-func Decode(input string) models.JSONOutput {
+func Encode(input models.ConverterInput) models.JSONOutput {
 
-	config.Logger.Debug("Service - Decode the tiny url")
+	config.Logger.Debug("Service - Convert into short url")
 
-	output, err := database.Decode(input)
+	var output string
+	var err error
+
+	//Insert the long url into db and get the unique id
+	id, err := database.InsertLongUrl(input.Url)
 
 	if err != nil {
 		return models.JSONOutput{
 			Code: http.StatusInternalServerError,
-			Data: "Error while fetching the longurl",
+			Data: err,
+		}
+	}
+
+	//Encode the unique id and insert the short url into that id
+	output, err = database.Encode(id)
+	if err != nil {
+		return models.JSONOutput{
+			Code: http.StatusInternalServerError,
+			Data: err,
 		}
 	}
 
@@ -28,27 +40,17 @@ func Decode(input string) models.JSONOutput {
 
 }
 
-func Encode(input models.ConverterInput) models.JSONOutput {
+func Decode(input string) models.JSONOutput {
 
-	config.Logger.Debug("Service - Convert into short url")
+	config.Logger.Debug("Service - Decode the tiny url")
 
-	var output string
-	var err error
-
-	id, err := database.InsertLongUrl(input.Url)
+	//Fetch the long url for the given short url
+	output, err := database.Decode(input)
 
 	if err != nil {
 		return models.JSONOutput{
 			Code: http.StatusInternalServerError,
-			Data: err,
-		}
-	}
-
-	output, err = database.Encode(id)
-	if err != nil {
-		return models.JSONOutput{
-			Code: http.StatusInternalServerError,
-			Data: err,
+			Data: "Error while fetching the longurl",
 		}
 	}
 

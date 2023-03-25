@@ -13,9 +13,7 @@ RUN go mod download
 
 COPY *.go ./
 
-RUN tail -1 .git/logs/HEAD > .git/version
-
-RUN mkdir /go/logs && GO111MODULE=on go build -o /go/bin -mod vendor
+RUN go build -o /go/bin -mod vendor
 
 ENTRYPOINT /go/bin/urlshortener
 

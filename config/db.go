@@ -23,4 +23,5 @@ func InitializeDb() {
 	}
 
 	Db = db
+	fmt.Println("Database Initialized!!!")
 }

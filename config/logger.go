@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"runtime"
@@ -12,6 +13,7 @@ import (
 var Logger *logrus.Logger
 
 func InitializeLogger() {
+
 	customFormatter := new(logrus.TextFormatter)
 	customFormatter.TimestampFormat = "2006-01-02 15:04:05"
 	customFormatter.FullTimestamp = true
@@ -27,4 +29,5 @@ func InitializeLogger() {
 	Logger.SetLevel(logrus.DebugLevel)
 	Logger.SetFormatter(customFormatter)
 	Logger.SetReportCaller(true)
+	fmt.Println("Logger Initialized!!!")
 }

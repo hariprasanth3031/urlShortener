@@ -1,24 +1,22 @@
 package handler
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"urlshortener/config"
 	"urlshortener/models"
 	"urlshortener/service"
-
-	"github.com/gin-gonic/gin"
 )
 
+// Function to convert the long url into a tiny url
 func Encode(c *gin.Context) {
 
 	config.Logger.Debug("Handler - Convert into short url")
 
+	//Binding the input with the model
 	var input models.ConverterInput
 
 	err := c.BindJSON(&input)
-
-	fmt.Println("input is", input.Url)
 
 	if err != nil || input.Url == "" {
 		config.Logger.Error("Error while binding the input")
@@ -31,10 +29,12 @@ func Encode(c *gin.Context) {
 	c.JSON(output.Code, output.Data)
 }
 
+// Function to convert a tiny url to respective long url
 func Decode(c *gin.Context) {
 
 	config.Logger.Debug("Handler - Decode the tinyurl")
 
+	//Get the tiny url by parsing the url
 	tinyUrl := c.Param("url")
 
 	output := service.Decode(tinyUrl)
