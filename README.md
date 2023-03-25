@@ -26,12 +26,12 @@ Expire time >= current time condition will handle the expiration case.
 As the character set consists of 62 characters, we can generate trillions of url.
 In case we have fixed number of characters, n power k will be unique urls where n is length, k = 62
 
-#Test Case link
+# Test Case link
 https://docs.google.com/spreadsheets/d/1z9g52czDXabOfapSqlPS3y6oQ_nkWNu5gZa1jDBOcek/edit#gid=0
 
-#Setup
+# Setup
 Create a mysql database with the name "url_shortener" and add the username password in the db.env file
 
-#Final app is in main branch
+# Final app is in main branch
 
 
