@@ -2,22 +2,38 @@ package config
 
 import (
 	"fmt"
+	"os"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
 )
 
 type EnvVariables struct {
-	DBCon string
+	//DBCon string
+	USER   string
+	PASS   string
+	HOST   string
+	DBNAME string
 }
 
 var Env *EnvVariables
 
 func InitializeEnv() {
 
+	_ = godotenv.Load(".env")
 	Env = &EnvVariables{
-
-		DBCon: "hariprasanth:12345@tcp(127.0.0.1:3306)/url_shortener",
-		//DBCon: "root:12345@tcp(docker.for.mac.localhost:3306)/sample",
+		USER:   os.Getenv("USER"),
+		PASS:   os.Getenv("PASSWORD"),
+		HOST:   os.Getenv("HOST"),
+		DBNAME: os.Getenv("NAME"),
 	}
 
-	fmt.Println("Environment Variables Setup Done!!!")
+	v := validator.New()
+	err := v.Struct(*Env)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	return
 
 }

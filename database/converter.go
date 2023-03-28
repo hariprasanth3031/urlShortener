@@ -33,7 +33,7 @@ func Encode(uniqueId uint64) (string, error) {
 	input.ShortUrl = shorturl
 
 	//Insert the short url into the db
-	if err := db.Debug().Where("id = ?", uniqueId).Updates(input).Error; err != nil {
+	if err := db.Debug().Table("url_store").Where("id = ?", uniqueId).Updates(input).Error; err != nil {
 		return "", err
 	}
 

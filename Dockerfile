@@ -1,22 +1,16 @@
-FROM golang:1.19
+FROM golang:alpine
 
-WORKDIR /app
+RUN mkdir /urlshortener
 
-RUN mkdir -p /go/src/urlshortener
+WORKDIR /urlshortener
 
-COPY . /go/src/urlshortener
-WORKDIR /go/src/urlshortener
+ADD go.mod .
+ADD go.sum .
 
-COPY go.mod ./
-COPY go.sum ./
 RUN go mod download
-
-COPY *.go ./
-
-RUN go build -o /go/bin -mod vendor
+ADD . .
+RUN mkdir /go/logs && GO111MODULE=on go build -o /go/bin -mod vendor
 
 ENTRYPOINT /go/bin/urlshortener
 
 EXPOSE 8080
-
-CMD [ "/urlshortener" ]

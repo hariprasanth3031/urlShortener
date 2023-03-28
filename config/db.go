@@ -4,7 +4,7 @@ import (
 	"fmt"
 	//"time"
 
-	sql "go.elastic.co/apm/module/apmgormv2/v2/driver/mysql"
+	mysql "go.elastic.co/apm/module/apmgormv2/v2/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
@@ -13,9 +13,15 @@ var Db *gorm.DB
 
 func InitializeDb() {
 
-	db, err := gorm.Open(sql.Open(Env.DBCon+fmt.Sprintf("?%s", "&parseTime=True")), &gorm.Config{
-		SkipDefaultTransaction: false,
-		NamingStrategy:         schema.NamingStrategy{SingularTable: true, TablePrefix: "url_shortener."},
+	URL := fmt.Sprintf("%s:%s@tcp(%s)/%s", Env.USER, Env.PASS, Env.HOST, Env.DBNAME)
+
+	fmt.Println("url is", URL)
+
+	db, err := gorm.Open(mysql.Open(URL+"?charset=utf8&parseTime=True&loc=Local"), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: false,
+			TablePrefix:   "url_shortener.",
+		},
 	})
 
 	if err != nil {
